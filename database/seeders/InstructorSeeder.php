@@ -14,8 +14,10 @@ class InstructorSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Manager',
-            'email' => 'manager@gmail.com',
+            'name' => 'instructor',
+            'email' => 'instructor@gmail.com',
+            'role' => 'instructor',
+            'username' => Slug::makeUser(new User(), 'instructor'),
             'password' => bcrypt('password'),
         ]);
     }
