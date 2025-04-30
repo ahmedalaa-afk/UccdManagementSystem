@@ -83,26 +83,26 @@ class User extends Authenticatable
     // Instructor Section
     public function manager()
     {
-        return $this->belongsTo(User::class)->where('role', 'admin');
+        return $this->belongsTo(User::class, 'manager_id')->where('role', 'admin');
     }
     public function course()
     {
-        return $this->belongsTo(Course::class)->where('role', 'instructor');
+        return $this->belongsTo(Course::class);
     }
 
     public function assignments()
     {
-        return $this->hasMany(Assignment::class)->where('role', 'instructor');
+        return $this->hasMany(Assignment::class);
     }
 
-    // Manager Section
+    // Admin Section
     public function instructors()
     {
-        return $this->hasMany(User::class)->where('role', 'admin');
+        return $this->hasMany(User::class, 'manager_id')->where('role', 'instructor');
     }
 
     public function posts()
     {
-        return $this->hasMany(Post::class)->where('role', 'admin');
+        return $this->hasMany(Post::class);
     }
 }

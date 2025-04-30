@@ -19,7 +19,7 @@ class ManagerSeeder extends Seeder
             'name' => 'Manager',
             'email' => 'manager@gmail.com',
             'password' => bcrypt('123456789'),
-            'role' => 'manager',
+            'role' => 'admin',
             'username' => Slug::makeUser(new User(), 'Manager'),
         ]);
     }

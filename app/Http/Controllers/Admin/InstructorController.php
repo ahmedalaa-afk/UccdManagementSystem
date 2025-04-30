@@ -87,7 +87,7 @@ class InstructorController extends Controller
             $this->fileUploadService->deleteImage($instructor->image);
             $instructor->image = null;
             $instructor->save();
-            
+
             // Handle file upload if a file is provided
             $image = $request->file('image');
             $path = $this->fileUploadService->uploadImage($image);
