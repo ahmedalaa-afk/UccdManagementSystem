@@ -16,8 +16,7 @@ class ManagerSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'first_name' => 'Manager',
-            'last_name' => 'Me',
+            'name' => 'Manager',
             'email' => 'manager@gmail.com',
             'password' => bcrypt('123456789'),
             'role' => 'manager',
