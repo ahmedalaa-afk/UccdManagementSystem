@@ -16,10 +16,11 @@ class ManagerSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Manager',
+            'first_name' => 'Manager',
+            'last_name' => 'Me',
             'email' => 'manager@gmail.com',
             'password' => bcrypt('123456789'),
-            'role' => 'admin',
+            'role' => 'manager',
             'username' => Slug::makeUser(new User(), 'Manager'),
         ]);
     }
