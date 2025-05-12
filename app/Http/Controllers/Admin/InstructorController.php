@@ -135,7 +135,7 @@ class InstructorController extends Controller
 
     public function getAllInstructors()
     {
-        $instructors = User::where('role', 'instructor')->all();
+        $instructors = User::where('role', 'instructor')->get();
         return ApiResponse::sendResponse('instructors retrieved successfully', InstructorResource::collection($instructors), true);
     }
 }
