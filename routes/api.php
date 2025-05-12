@@ -39,6 +39,7 @@ Route::controller(AuthController::class)->group(function () {
         Route::prefix('student')->controller(StudentController::class)->group(function () {
             Route::post('/import', 'import');
             Route::get('/export', 'export');
+            Route::get('/getAllStudents', 'getAllStudents');
         });
 
         Route::prefix('course')->controller(CourseController::class)->group(function () {
