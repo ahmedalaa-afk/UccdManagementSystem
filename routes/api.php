@@ -33,6 +33,7 @@ Route::controller(AuthController::class)->group(function () {
             Route::post('/update', 'update');
             Route::post('/delete', 'delete');
             Route::post('/restore', 'restore');
+            Route::get('/getAllInstructors', 'getAllInstructors');
         });
 
         Route::prefix('student')->controller(StudentController::class)->group(function () {

@@ -132,4 +132,10 @@ class InstructorController extends Controller
             return ApiResponse::sendResponse('instructor not found', [], false);
         }
     }
+
+    public function getAllInstructors()
+    {
+        $instructors = User::where('role', 'instructor')->all();
+        return ApiResponse::sendResponse('instructors retrieved successfully', InstructorResource::collection($instructors), true);
+    }
 }
