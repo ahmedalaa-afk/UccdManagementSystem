@@ -13,7 +13,9 @@ class Category extends Model
 
     public function manager()
     {
-        return $this->belongsTo(User::class)->where('role', 'admin');
+        return $this->belongsTo(User::class)->whereHas('roles', function ($q) {
+            $q->where('name', 'admin');
+        });
     }
 
     public function courses()

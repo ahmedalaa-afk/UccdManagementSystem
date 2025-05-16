@@ -12,13 +12,18 @@ class Assignment extends Model
     protected $table = 'assignments';
     protected $guarded = [];
 
-    public function course(){
+    public function course()
+    {
         return $this->belongsTo(Course::class);
     }
-    public function instructor(){
-        return $this->belongsTo(User::class)->where('role','instructor');
+    public function instructor()
+    {
+        return $this->belongsTo(User::class)->whereHas('roles', function ($q) {
+            $q->where('name', 'instructor');
+        });
     }
-    public function files(){
+    public function files()
+    {
         return $this->hasMany(AssignmentFiles::class);
     }
 }

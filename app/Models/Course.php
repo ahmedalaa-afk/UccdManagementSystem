@@ -14,11 +14,15 @@ class Course extends Model
 
     public function manager()
     {
-        return $this->belongsTo(User::class)->where('role','admin');
+        return $this->belongsTo(User::class)->whereHas('roles', function ($q) {
+            $q->where('name', 'admin');
+        });
     }
     public function instructor()
     {
-        return $this->hasOne(User::class)->where('role','instructor');
+        return $this->hasOne(User::class)->whereHas('roles', function ($q) {
+            $q->where('name', 'instructor');
+        });
     }
 
     public function students()
@@ -37,7 +41,8 @@ class Course extends Model
             ->withTimestamps();
     }
 
-    public function assignments(){
+    public function assignments()
+    {
         return $this->hasMany(Assignment::class);
     }
 }

@@ -12,8 +12,11 @@ class Post extends Model
     protected $table = 'posts';
     protected $guarded = [];
 
-    public function manager(){
-        return $this->belongsTo(User::class)->where('role','admin');
+    public function manager()
+    {
+        return $this->belongsTo(User::class)->whereHas('roles', function ($q) {
+            $q->where('name', 'admin');
+        });
     }
 
     public function comments()

@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens, SoftDeletes;
+    use HasFactory, Notifiable, HasApiTokens, SoftDeletes, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -83,8 +84,12 @@ class User extends Authenticatable
     // Instructor Section
     public function manager()
     {
-        return $this->belongsTo(User::class, 'manager_id')->where('role', 'admin');
+        return $this->belongsTo(User::class, 'manager_id')
+            ->whereHas('roles', function ($q) {
+                $q->where('name', 'admin');
+            });
     }
+
     public function course()
     {
         return $this->belongsTo(Course::class);
@@ -98,7 +103,9 @@ class User extends Authenticatable
     // Admin Section
     public function instructors()
     {
-        return $this->hasMany(User::class, 'manager_id')->where('role', 'instructor');
+        return $this->hasMany(User::class, 'manager_id')->whereHas('roles', function ($q) {
+            $q->where('name', 'instructor');
+        });
     }
 
     public function posts()
