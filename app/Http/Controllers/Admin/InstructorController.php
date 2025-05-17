@@ -59,7 +59,7 @@ class InstructorController extends Controller
         }
 
         if ($instructor) {
-            return ApiResponse::sendResponse('instructor created successfully', new InstructorResource($instructor), true);
+            return ApiResponse::sendResponse('instructor created successfully', new StoreInstructorResource($instructor), true);
         } else {
             return ApiResponse::sendResponse('instructor not found', [], false);
         }
