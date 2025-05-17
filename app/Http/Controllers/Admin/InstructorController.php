@@ -139,6 +139,6 @@ class InstructorController extends Controller
         $instructors = User::whereHas('roles', function ($q) {
             $q->where('name', 'instructor');
         })->get();
-        return ApiResponse::sendResponse('instructors retrieved successfully', InstructorResource::collection($instructors), true);
+        return ApiResponse::sendResponse('instructors retrieved successfully', StoreInstructorResource::collection($instructors), true);
     }
 }
