@@ -33,7 +33,9 @@ class StudentController extends Controller
 
     public function getAllStudents()
     {
-        $students = User::where('role', 'student')->get();
+        $students = User::whereHas('roles', function ($q) {
+            $q->where('name', 'student');
+        })->get();
         return ApiResponse::sendResponse('Students retrieved successfully.', RetriveStudentsResource::collection($students), true);
     }
 }

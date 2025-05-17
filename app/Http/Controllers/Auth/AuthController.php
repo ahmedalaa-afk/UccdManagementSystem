@@ -25,7 +25,8 @@ class AuthController extends Controller
 
         if (Auth::attempt($request->only(['email', 'password']))) {
             $user = Auth::user();
-            $user->token = $user->createToken($user->role, [$user->role])->plainTextToken;
+            $role = $user->roles[0]->name;
+            $user->token = $user->createToken($role, [$role])->plainTextToken;
             return ApiResponse::sendResponse('Login successful', new UserLoginResource($user), true);
         }
         return ApiResponse::sendResponse('Invalid credentials', [], false);
@@ -47,23 +48,23 @@ class AuthController extends Controller
     public function resetPassword(ResetPasswordOtpRequest $request)
     {
         $email = $request->input('email');
-        $otp = ModelsOtp::where('token',$request->input('otp'))->first();
+        $otp = ModelsOtp::where('token', $request->input('otp'))->first();
         $password = $request->input('password');
 
         // check if otp exists
-        if(!$otp){
-            return ApiResponse::sendResponse('Invalid or expired OTP',[],false);
+        if (!$otp) {
+            return ApiResponse::sendResponse('Invalid or expired OTP', [], false);
         }
         // 1. Validate OTP
         $otpValidator = new Otp;
         if (!$otpValidator->validate($email, $otp->token)) {
-            return ApiResponse::sendResponse('Invalid or expired OTP',[],false);
+            return ApiResponse::sendResponse('Invalid or expired OTP', [], false);
         }
 
         // 2. Find the user
         $user = User::where('email', $email)->first();
         if (!$user) {
-            return ApiResponse::sendResponse('User not found',[],false);
+            return ApiResponse::sendResponse('User not found', [], false);
         }
 
         // 3. Update the password
@@ -73,6 +74,6 @@ class AuthController extends Controller
         // Delete opt after change password
         $otp->delete();
         // 5. Return response
-        return ApiResponse::sendResponse('Password reset successfully.',[],true);
+        return ApiResponse::sendResponse('Password reset successfully.', [], true);
     }
 }

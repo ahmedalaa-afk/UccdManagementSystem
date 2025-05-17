@@ -14,12 +14,13 @@ class InstructorSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $instructor = User::create([
             'name' => 'instructor',
             'email' => 'instructor@gmail.com',
-            'role' => 'instructor',
             'username' => Slug::makeUser(new User(), 'instructor'),
             'password' => bcrypt('password'),
         ]);
+        $instructor->assignRole('instructor');
+        $instructor->save();
     }
 }

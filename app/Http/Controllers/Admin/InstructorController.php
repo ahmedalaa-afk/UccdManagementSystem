@@ -29,15 +29,16 @@ class InstructorController extends Controller
     {
         $username = Slug::makeUser(new User(), $request->name);
         // create a new instructor
-        $instructor = User::where('role', 'instructor')->create([
+        $instructor = User::create([
             'name' => $request->name,
             'username' => $username,
             'email' => $request->email,
             'password' =>  bcrypt($request->password),
             'phone' => $request->phone,
             'manager_id' => $request->user()->id,
-            'role' => 'instructor'
         ]);
+        // assign role
+        $instructor->assignRole('instructor');
 
         // Handle file upload if a file is provided
         $image = $request->file('image');
@@ -135,7 +136,9 @@ class InstructorController extends Controller
 
     public function getAllInstructors()
     {
-        $instructors = User::where('role', 'instructor')->get();
+        $instructors = User::whereHas('roles', function ($q) {
+            $q->where('name', 'instructor');
+        })->get();
         return ApiResponse::sendResponse('instructors retrieved successfully', InstructorResource::collection($instructors), true);
     }
 }

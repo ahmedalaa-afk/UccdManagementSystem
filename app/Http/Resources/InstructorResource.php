@@ -20,7 +20,7 @@ class InstructorResource extends JsonResource
             'Phone' => $this->phone,
             'Description' => $this->description,
             'username' => $this->username,
-            'Role' => $this->role,
+            'Role' => $this->roles[0]->name,
             'Image' => $this->image,
         ];
     }
