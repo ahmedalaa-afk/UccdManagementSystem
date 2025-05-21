@@ -15,6 +15,12 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController as ControllersPostController;
 use App\Http\Controllers\Student\CourseController as StudentCourseController;
 use App\Http\Controllers\Student\StudentController as StudentHomeController;
+use App\Http\Controllers\SuperAdmin\CategoryController as SuperAdminCategoryController;
+use App\Http\Controllers\SuperAdmin\CourseController as SuperAdminCourseController;
+use App\Http\Controllers\SuperAdmin\InstructorController as SuperAdminInstructorController;
+use App\Http\Controllers\SuperAdmin\ManagerController;
+use App\Http\Controllers\SuperAdmin\PostController as SuperAdminPostController;
+use App\Http\Controllers\SuperAdmin\StudentController as SuperAdminStudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +31,57 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('logout', 'logout')->middleware(['auth:sanctum']);
     Route::post('forgetPassword', 'forgetPassword');
     Route::post('resetPassword', 'resetPassword');
+
+    Route::prefix('super_admin')->middleware(['auth:sanctum', 'is_super_admin'])->group(function () {
+        Route::prefix('manager')->controller(ManagerController::class)->group(function () {
+            Route::post('/store', 'store');
+            Route::post('/update', 'update');
+            Route::get('/show', 'show');
+            Route::post('/delete', 'delete');
+            Route::post('/restore', 'restore');
+        });
+
+        Route::prefix('instructor')->controller(SuperAdminInstructorController::class)->group(function () {
+            Route::post('/store', 'store');
+            Route::get('/show', 'show');
+            Route::post('/update', 'update');
+            Route::post('/delete', 'delete');
+            Route::post('/restore', 'restore');
+            Route::get('/getAllInstructors', 'getAllInstructors');
+        });
+
+        Route::prefix('student')->controller(SuperAdminStudentController::class)->group(function () {
+            Route::post('/import', 'import');
+            Route::get('/export', 'export');
+            Route::get('/getAllStudents', 'getAllStudents');
+        });
+
+        Route::prefix('course')->controller(SuperAdminCourseController::class)->group(function () {
+            Route::post('/store', 'store');
+            Route::get('/show', 'show');
+            Route::post('/update', 'update');
+            Route::post('/delete', 'delete');
+            Route::post('/restore', 'restore');
+            Route::get('/getAllEnrollmentStudents', 'getAllEnrollmentStudents');
+            Route::post('/acceptStudent', 'acceptStudent');
+        });
+
+        Route::prefix('category')->controller(SuperAdminCategoryController::class)->group(function () {
+            Route::post('/store', 'store');
+            Route::get('/show', 'show');
+            Route::post('/update', 'update');
+            Route::post('/delete', 'delete');
+            Route::post('/restore', 'restore');
+        });
+
+        Route::prefix('post')->controller(SuperAdminPostController::class)->group(function () {
+            Route::post('/store', 'store');
+            Route::get('/show', 'show');
+            Route::post('/update', 'update');
+            Route::post('/delete', 'delete');
+            Route::post('/restore', 'restore');
+        });
+    });
 
     Route::prefix('manager')->middleware(['auth:sanctum', 'is_manager'])->group(function () {
         Route::prefix('instructor')->controller(InstructorController::class)->group(function () {
