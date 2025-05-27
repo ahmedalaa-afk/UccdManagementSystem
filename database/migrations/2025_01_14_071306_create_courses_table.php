@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('image');
             $table->string('slug')->unique();
             $table->string('location');
+            $table->integer('limit')->default(0)->max(30);
             $table->string('rating')->nullable();
             $table->timestamp('apply_start');
             $table->timestamp('apply_end');

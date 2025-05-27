@@ -15,25 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->count(20)->create([
-            'name' => fake()->name(),
-            'email' => fake()->unique()->email(),
-            'password' => bcrypt('123456789'),
-            'gender' => 'male',
-            'disability' => 'no',
-            'national_id' => fake()->numberBetween(10000000000,99999999999),
-            'university_id' => fake()->numberBetween(100000000,999999999),
-            'phone' => fake()->phoneNumber(),
-            'university' => 'korean university',
-            'faculty' => 'korean university',
-            'department' => "it",
-            'specialization' => "it,software",
-            'current_year' => 'fourth',
-            'expected_graduation_year' => fake()->date(),
-            'address' => fake()->address(),
-            'birth_date' => fake()->date(),
-
-            
-        ]);
+        User::factory()->count(40)->create()->each(function ($user) {
+            $user->assignRole('student');
+        });
     }
 }

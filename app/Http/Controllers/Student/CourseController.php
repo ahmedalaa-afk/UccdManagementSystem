@@ -42,8 +42,8 @@ class CourseController extends Controller
         if ($course->apply_end < now()) {
             return ApiResponse::sendResponse('Enrollment period has ended', [], false);
         }
-
         $course->students()->attach($request->user()->id);
+        $course->save();
         return ApiResponse::sendResponse('Course enrolled successfully', [], true);
     }
 

@@ -64,6 +64,7 @@ Route::controller(AuthController::class)->group(function () {
             Route::post('/restore', 'restore');
             Route::get('/getAllEnrollmentStudents', 'getAllEnrollmentStudents');
             Route::post('/acceptStudent', 'acceptStudent');
+            Route::post('/rejectStudent', 'rejectStudent');
         });
 
         Route::prefix('category')->controller(SuperAdminCategoryController::class)->group(function () {
@@ -107,6 +108,7 @@ Route::controller(AuthController::class)->group(function () {
             Route::post('/restore', 'restore');
             Route::get('/getAllEnrollmentStudents', 'getAllEnrollmentStudents');
             Route::post('/acceptStudent', 'acceptStudent');
+            Route::post('/rejectStudent', 'rejectStudent');
         });
 
         Route::prefix('category')->controller(CategoryController::class)->group(function () {

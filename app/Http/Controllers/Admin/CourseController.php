@@ -72,7 +72,11 @@ class CourseController extends Controller
             if (!$course) {
                 return ApiResponse::sendResponse('Course not found', [], false);
             }
-            $instructor = User::where('role', 'instructor')->where('email', $request->instructor_email)->first();
+            $instructor = User::whereHas('roles', function ($qr) {
+                $qr->where('name', 'instructor');
+            })->where('email', $request->instructor_email)->first();
+
+
             if ($request->hasFile('image')) {
                 $image = $request->image;
                 // delete course previous image
@@ -173,7 +177,9 @@ class CourseController extends Controller
             'course_slug' => 'required|exists:courses,slug'
         ]);
 
-        $user = User::where('role', 'student')->where('email', $request->email)->first();
+        $user = User::whereHas('roles', function ($qr) {
+            $qr->where('name', 'student');
+        })->where('email', $request->email)->first();
         $course = Course::where('slug', $request->course_slug)->first();
 
         if (!$user) {
@@ -190,6 +196,14 @@ class CourseController extends Controller
         if (!$student) {
             return ApiResponse::sendResponse('Student not enrolled in the course', [], false);
         }
+        // check if course reach limit
+        if ($course->students()->count() == $course->limit) {
+            return ApiResponse::sendResponse('Course limit reached', [], false);
+        }
+
+        $course->students()->attach($request->user()->id);
+        $course->limit = $course->limit + 1;
+        $course->save();
 
         // Update the pivot status to 'accepted'
         $course->students()->updateExistingPivot($user->id, ['status' => 'accepted']);
@@ -198,5 +212,36 @@ class CourseController extends Controller
 
 
         return ApiResponse::sendResponse('Student accepted in course', [], true);
+    }
+
+    public function rejectStudent(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'course_slug' => 'required|exists:courses,slug'
+        ]);
+
+        $user = User::whereHas('roles', function ($qr) {
+            $qr->where('name', 'student');
+        })->where('email', $request->email)->first();
+        $course = Course::where('slug', $request->course_slug)->first();
+
+        if (!$user) {
+            return ApiResponse::sendResponse('User not found', [], false);
+        }
+
+        if (!$course) {
+            return ApiResponse::sendResponse('Course not found', [], false);
+        }
+
+        $course->students()->dettach($request->user()->id);
+        $course->save();
+
+        $course->students()->updateExistingPivot($user->id, ['status' => 'rejected']);
+        $user->is_enrolled = 'no';
+        $user->save();
+
+
+        return ApiResponse::sendResponse('Student rejected in course', [], true);
     }
 }

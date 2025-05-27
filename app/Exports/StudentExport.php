@@ -5,14 +5,17 @@ namespace App\Exports;
 use App\Models\User;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-class StudentExport implements FromCollection,WithHeadings
+
+class StudentExport implements FromCollection, WithHeadings
 {
     /**
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
-        return User::where('role','student')->select(
+        return User::whereHas('roles', function ($qr) {
+            $qr->where('name', 'student');
+        })->select(
             'name',
             'email',
             'username',
