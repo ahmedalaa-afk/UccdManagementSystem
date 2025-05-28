@@ -23,7 +23,8 @@ use App\Http\Controllers\SuperAdmin\PostController as SuperAdminPostController;
 use App\Http\Controllers\SuperAdmin\StudentController as SuperAdminStudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\RateController;
+use App\Http\Controllers\Student\RateController as StudentRateController;
 
 Route::controller(AuthController::class)->group(function () {
 
@@ -151,6 +152,9 @@ Route::controller(AuthController::class)->group(function () {
 
         Route::prefix('interest')->group(function () {
             Route::post('/store', 'storeInterests');
+        });
+        Route::prefix('rate')->controller(StudentRateController::class)->group(function () {
+            Route::post('/store', 'store');
         });
     });
 
