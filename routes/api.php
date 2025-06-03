@@ -25,6 +25,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RateController;
 use App\Http\Controllers\Student\RateController as StudentRateController;
+use App\Http\Controllers\SuperAdmin\RateController as SuperAdminRateController;
 
 Route::controller(AuthController::class)->group(function () {
 
@@ -82,6 +83,10 @@ Route::controller(AuthController::class)->group(function () {
             Route::post('/update', 'update');
             Route::post('/delete', 'delete');
             Route::post('/restore', 'restore');
+        });
+
+        Route::prefix('rate')->controller(SuperAdminRateController::class)->group(function () {
+            Route::post('/getCourseRate', 'getCourseRate');
         });
     });
 
