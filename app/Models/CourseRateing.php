@@ -18,4 +18,9 @@ class CourseRateing extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getRatingAverage()
+    {
+        return $this->course->rateings()->avg('rating');
+    }
 }

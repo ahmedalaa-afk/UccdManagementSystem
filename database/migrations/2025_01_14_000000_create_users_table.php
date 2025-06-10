@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('faculty')->nullable();
             $table->string('department')->nullable();
             $table->string('specialization')->nullable();
-            $table->string('current_year')->nullable();
+            $table->enum('current_year', [1, 2, 3, 4])->default(1);
             $table->timestamp('expected_graduation_year')->nullable();
             $table->string('address')->nullable();
             $table->timestamp('birth_date')->nullable();

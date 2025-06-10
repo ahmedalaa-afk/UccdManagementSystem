@@ -18,6 +18,7 @@ class RateResource extends JsonResource
             'Rating' => $this->rating,
             'Review' => $this->review,
             'Created At' => $this->created_at,
+            'Rating Average' => $this->getRatingAverage(),
             'User' => new UserResource($this->user),
         ];
     }

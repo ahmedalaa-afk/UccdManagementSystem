@@ -19,11 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'is_super_admin' => IsSuperAdmin::class,
-            'is_manager' => IsSuperAdmin::class,
             'is_manager' => IsManager::class,
             'is_instructor' => IsInstructor::class,
             'is_student' => IsStudent::class,
-
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

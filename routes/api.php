@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\InstructorController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\RateController as AdminRateController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CommentController;
@@ -131,6 +132,10 @@ Route::controller(AuthController::class)->group(function () {
             Route::post('/update', 'update');
             Route::post('/delete', 'delete');
             Route::post('/restore', 'restore');
+        });
+
+        Route::prefix('rate')->controller(AdminRateController::class)->group(function () {
+            Route::post('/getCourseRate', 'getCourseRate');
         });
     });
     Route::prefix('instructor')->middleware(['auth:sanctum', 'is_instructor'])->group(function () {
