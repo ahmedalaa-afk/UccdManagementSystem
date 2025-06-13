@@ -26,6 +26,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RateController;
 use App\Http\Controllers\Student\RateController as StudentRateController;
+use App\Http\Controllers\SuperAdmin\FirebaseController;
 use App\Http\Controllers\SuperAdmin\RateController as SuperAdminRateController;
 
 Route::controller(AuthController::class)->group(function () {
@@ -88,6 +89,11 @@ Route::controller(AuthController::class)->group(function () {
 
         Route::prefix('rate')->controller(SuperAdminRateController::class)->group(function () {
             Route::post('/getCourseRate', 'getCourseRate');
+        });
+        Route::prefix('notifications')->controller(FirebaseController::class)->group(function () {
+            Route::post('/token', 'sendToToken');
+            Route::post('/topic', 'sendToTopic');
+            Route::post('/multicast', 'sendMulticast');
         });
     });
 
