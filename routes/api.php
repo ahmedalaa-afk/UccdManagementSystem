@@ -145,8 +145,6 @@ Route::controller(AuthController::class)->group(function () {
         });
     });
     Route::prefix('instructor')->middleware(['auth:sanctum', 'is_instructor'])->group(function () {
-        Route::post('login', 'login')->withoutMiddleware(['auth:sanctum', 'is_instructor']);
-        Route::post('logout', 'logout');
 
         Route::prefix('attendance')->controller(AttendanceController::class)->group(function () {
             Route::post('/store', 'store');
@@ -157,8 +155,6 @@ Route::controller(AuthController::class)->group(function () {
     });
 
     Route::prefix('student')->middleware(['auth:sanctum', 'is_student'])->controller(StudentHomeController::class)->group(function () {
-        Route::post('login', 'login')->withoutMiddleware(['auth:sanctum', 'is_student']);
-        Route::post('logout', 'logout');
 
         Route::prefix('course')->controller(StudentCourseController::class)->group(function () {
             Route::get('/getAvailableCourses', 'getAvailableCourses');
